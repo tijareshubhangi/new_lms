@@ -35,7 +35,7 @@ const Sign_UP = () => {
         login({ name: user.displayName, email: user.email, photo: user.photoURL }, token);
   
         // Send the user data and token to your backend (if needed)
-        const response = await axios.post("http://43.204.214.179:9000/api/users/save", {
+        const response = await axios.post("http://43.204.214.179:3000/api/users/save", {
           name: user.displayName,
           email: user.email,
           photo: user.photoURL,
