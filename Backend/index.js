@@ -30,8 +30,27 @@ connectDB();
 
 app.use(express.static(path.join(__dirname, "../build")));
 
+// Connect to the database
+connectDB();
+
+// Define allowed origins (you can include both localhost and public IP for production)
+const allowedOrigins = ['http://localhost:9000', 'http://43.204.214.179:3000','http://43.204.214.179','http://43.204.214.179:9000'];
+
+// CORS middleware with dynamic origin handling
+app.use(cors({
+  origin: (origin, callback) => {
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true); // Allow the request
+    } else {
+      callback(new Error('Not allowed by CORS')); // Reject the request
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow these HTTP methods
+  credentials: true // Allow cookies and credentials
+}));
+
 // Middleware
-app.use(cors());
+
 app.use(express.json());
 
 // Handle React routing
