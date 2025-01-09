@@ -25,16 +25,15 @@ const app = express();
 dotenv.config();
 mongoose.set("strictQuery", true);
 
-// Connect to Database
-connectDB();
 
-app.use(express.static(path.join(__dirname, "../build")));
+ app.use(express.static(path.join(__dirname, "../build")));
 
+// Middleware
 // Connect to the database
 connectDB();
 
 // Define allowed origins (you can include both localhost and public IP for production)
-const allowedOrigins = ['http://localhost:9000', 'http://65.2.3.95:3000','http://65.2.3.95','http://65.2.3.95:9000'];
+const allowedOrigins = ['http://localhost:9000', 'http://13.201.186.255:3000','http://13.201.186.255','http://13.201.186.255:9000'];
 
 // CORS middleware with dynamic origin handling
 app.use(cors({
@@ -48,9 +47,6 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow these HTTP methods
   credentials: true // Allow cookies and credentials
 }));
-
-// Middleware
-
 app.use(express.json());
 
 // Handle React routing
@@ -220,5 +216,5 @@ app.post('/api/users/save', async (req, res) => {
 // Start Server
 const PORT = process.env.PORT || 9000;
 app.listen(PORT, () => {
-  console.log(`API is running on http://65.2.3.95:${PORT}`);
+  console.log(`API is running on http://13.201.186.255:${PORT}`);
 });

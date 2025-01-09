@@ -134,7 +134,7 @@ class authController {
             expiresIn: "5m",
           });
   
-          const link = `http://65.2.3.95:3000/user/reset/${isUser._id}/${token}`;
+          const link = `http://13.201.186.255:3000/user/reset/${isUser._id}/${token}`;
   
           // email sending
           const transport = nodemailer.createTransport({
@@ -314,7 +314,7 @@ class authController {
             expiresIn: "5m",
           });
   
-          const link = `http://65.2.3.95:9000/user/sendEmail/${isUser._id}/${token}`;
+          const link = `http://13.201.186.255:9000/user/sendEmail/${isUser._id}/${token}`;
           
   
           // email sending
@@ -400,7 +400,7 @@ class authController {
             expiresIn: "5m",
           });
   
-          const link = `http://65.2.3.95:3000/user/reset/${isUser._id}/${token}`;
+          const link = `http://13.201.186.255:3000/user/reset/${isUser._id}/${token}`;
   
           // email sending
           const transport = nodemailer.createTransport({
