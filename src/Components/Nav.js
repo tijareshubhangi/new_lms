@@ -3,18 +3,17 @@ import { Link, useNavigate } from "react-router-dom";
 import { IoMdCart } from "react-icons/io";
 import { useUser } from '../context/UserContext'; // Importing UserContext
 
-
-
-
 const Nav = ({ cartCount}) => {
-
-
+  
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [profileImage, setProfileImage] = useState(null); // Default profile image
   const [isScrolled, setIsScrolled] = useState(false); // To track scroll state
   const dropdownRef = useRef(null);
   const { user, logout } = useUser(); // Access user and logout from context
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+
 
   useEffect(() => {
     // Fetch the profile image from localStorage
@@ -22,6 +21,14 @@ const Nav = ({ cartCount}) => {
     if (storedImage) {
       setProfileImage(storedImage);
     }
+
+   
+      // Fetch name from localStorage
+      const storedFirstName = localStorage.getItem("userFirstName") || "User";
+      const storedLastName = localStorage.getItem("userLastName") || "";
+      setFirstName(storedFirstName);
+      setLastName(storedLastName);
+  
 
     // Close dropdown on outside click
     const handleClickOutside = (event) => {
@@ -172,7 +179,8 @@ const Nav = ({ cartCount}) => {
                   {dropdownOpen && (
                     <ul className="dropdown-menu dropdown-menu-end show mt-3">
                       <li className="dropdown-item-text">
-                        <strong>{`Welcome, ${name}`}</strong>    
+                        <strong>Welcome, {firstName} {lastName}!</strong>
+                        {/* <strong>{`Welcome, ${name}`}</strong>     */}
                         <p className="small mb-0">{` ${email}`}</p>  
                       </li>
                       <div className="dropdown-divider"></div>

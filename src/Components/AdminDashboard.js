@@ -15,12 +15,12 @@ const AdminDashboard = () => {
   // Function to handle the counter incrementing
   const incrementCounter = (start, end, setValue, duration = 2000) => {
     let startValue = start;
-    const increment = Math.ceil(end / (duration / 50)); // Determines step size
+    const increment = Math.ceil(end / (duration / 50)); 
     const interval = setInterval(() => {
       startValue += increment;
       if (startValue >= end) {
         clearInterval(interval);
-        setValue(end); // Ensure it ends exactly at the target value
+        setValue(end); 
       } else {
         setValue(startValue);
       }

@@ -1,5 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Import Bootstrap JS (includes Popper.js)
 const AdminSideNavbar = () => {
   return (
@@ -9,8 +11,9 @@ const AdminSideNavbar = () => {
         {/* Navbar brand for xl START */}
         <div className="d-flex align-items-center">
           <NavLink className="navbar-brand" to="/admin-dashboard">
-            <img className="navbar-brand-item" src="./assets/images/LMS.jpg"
-  alt="Logo" />
+          <Link to="/">
+            <img className="navbar-brand-item" src="./assets/images/LMS.jpg" alt="Logo" />
+        </Link>
           </NavLink>
         </div>
         {/* Navbar brand for xl END */}

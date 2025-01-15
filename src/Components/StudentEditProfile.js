@@ -5,7 +5,7 @@ import axios from "../Components/Services/axiosInterceptor";
 
 const StudentEditProfile = () => {
   const [file, setFile] = useState(null);
-  const [preview, setPreview] = useState(null) // Default image
+  const [preview, setPreview] = useState(null) 
   const [profileImage, setProfileImage] = useState(null);
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -25,6 +25,10 @@ const StudentEditProfile = () => {
         console.log("Fetched Name:", firstName, lastName); // Log fetched name
         setFirstName(firstName);
         setLastName(lastName);
+
+        // Save to localStorage
+        localStorage.setItem("userFirstName", firstName);
+        localStorage.setItem("userLastName", lastName);
       } else {
         console.error("Error fetching name:", res.data.error);
       }
@@ -88,8 +92,8 @@ const handleSaveName = async () => {
             setProfileImage(latestImage);  // Set the image URL to profileImage
             setPreview(latestImage);       // Set the preview to the latest image URL
           } else {
-            setProfileImage("assets/images/avatar/07.jpg");  // Fallback to default if no image
-            setPreview("assets/images/avatar/07.jpg");
+            setProfileImage("http://13.235.71.191:3000/assets/images/avatar/07.jpg"); // Fallback to default if no image
+            setPreview("http://13.235.71.191:3000/assets/images/avatar/07.jpg");
           }
         }
       } catch (error) {
@@ -132,7 +136,7 @@ const handleSaveName = async () => {
       });
 
       if (res.status === 200) {
-        const latestImageUrl = `http://13.201.186.255:3000/public/${res.data.imageFile}`;
+        const latestImageUrl = `http://13.235.71.191:3000/public/${res.data.imageFile}`;
         // Store the image URL in localStorage
         localStorage.setItem("profileImage", latestImageUrl);
         setProfileImage(latestImageUrl);  // Persist image in profileImage state
@@ -191,7 +195,7 @@ Page Banner START */}
   <div className="avatar avatar-xxl mt-n3">
     <img
       className="avatar-img rounded-circle border border-white border-3 shadow"
-      src={profileImage}  // Bind to the profileImage state
+      src={profileImage}  
       alt="Profile"
     />
   </div>
@@ -372,149 +376,141 @@ Page content START */}
                 <div className="card-body">
                   {/* Form */}
                   <form className="row g-4">
-                    <div className="text-center relative">
-                      <h2>Profile Picture</h2>
-                      <div className="d-flex align-items-center">
-  <label className="position-relative me-4" htmlFor="uploadfile-1" title="Replace this pic">
-    <span className="avatar avatar-xl">
-      <img
-        className="avatar-img rounded-circle border border-white border-3 shadow"
-        src={preview}
-        alt="Profile Preview"
-      />
-    </span>
-    <button type="button" className="uploadremove" onClick={handleReset}>
-      <i className="bi bi-x text-white" />
-    </button>
-  </label>
-  <label className="btn btn-primary-soft mb-0" htmlFor="uploadfile-1">Change</label>
-  <input
-    id="uploadfile-1"
-    className="form-control d-none"
-    type="file"
-    onChange={handleFileChange}
-    accept="image/*"
-  />
-</div>
-<button className="btn btn-primary mt-3" onClick={handleSubmit} type="button">
-  Upload Photo
-</button>
-                    </div>
-                    {/* Full name */}
-                    <div>
-      <h1>Edit Profile</h1>
-      <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
-        <div>
-        <label>First Name</label>
+      <div className="text-center relative">
+        <h2>Profile Picture</h2>
+        <div className="d-flex align-items-center">
+          <label className="position-relative me-4" htmlFor="uploadfile-1" title="Replace this pic">
+            <span className="avatar avatar-xl">
+              <img className="avatar-img rounded-circle border border-white border-3 shadow" src={preview} alt="Profile Preview" />
+            </span>
+            <button type="button" className="uploadremove" onClick={handleReset}>
+              <i className="bi bi-x text-white" />
+            </button>
+          </label>
+          <label className="btn btn-primary-soft mb-0" htmlFor="uploadfile-1">Change</label>
           <input
-            type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
+            id="uploadfile-1"
+            className="form-control d-none"
+            type="file"
+            onChange={handleFileChange}
+            accept="image/*"
           />
         </div>
-        <div>
-        <label>Last Name: </label>
-        <input
-            type="text"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-          />
-        </div>
-        <button
-          onClick={handleSaveName}
-          style={{
-            padding: "8px 16px",
-            backgroundColor: "#007bff",
-            color: "#fff",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-          }}
-        >
-          Save
+        <button className="btn btn-primary mt-3" onClick={handleSubmit} type="button">
+          Upload Photo
         </button>
       </div>
-    </div>
-                    {/* Username */}
-                    <div className="col-md-6">
-                      <label className="form-label">Username</label>
-                      <div className="input-group">
-                        <span className="input-group-text">Eduport.com</span>
-                        <input
-                          type="text"
-                          className="form-control"
-                          defaultValue="loristev"
-                        />
-                      </div>
-                    </div>
-                    {/* Email id */}
-                    <div className="col-md-6">
-                      <label className="form-label">Email id</label>
-                      <input
-                        className="form-control"
-                        type="email"
-                        defaultValue="example@gmail.com"
-                        placeholder="Email"
-                      />
-                    </div>
-                    {/* Phone number */}
-                    <div className="col-md-6">
-                      <label className="form-label">Phone number</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        defaultValue={1234567890}
-                        placeholder="Phone number"
-                      />
-                    </div>
-                    {/* Location */}
-                    <div className="col-md-6">
-                      <label className="form-label">Location</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        defaultValue="California"
-                      />
-                    </div>
-                    {/* About me */}
-                    <div className="col-12">
-                      <label className="form-label">About me</label>
-                      <textarea
-                        className="form-control"
-                        rows={3}
-                        defaultValue={
-                          "I’ve found a way to get paid for my favorite hobby, and do so while following my dream of traveling the world."
-                        }
-                      />
-                      <div className="form-text">
-                        Brief description for your profile.
-                      </div>
-                    </div>
-                    {/* Education */}
-                    <div className="col-12">
-                      <label className="form-label">Education</label>
-                      <input
-                        className="form-control mb-2"
-                        type="text"
-                        defaultValue="Bachelor in Computer Graphics"
-                      />
-                      <input
-                        className="form-control mb-2"
-                        type="text"
-                        defaultValue="Masters in Computer Graphics"
-                      />
-                      <button className="btn btn-sm btn-light mb-0">
-                        <i className="bi bi-plus me-1" />
-                        Add more
-                      </button>
-                    </div>
-                    {/* Save button */}
-                    <div className="d-sm-flex justify-content-end">
-                      <button type="button" className="btn btn-primary mb-0">
-                        Save changes
-                      </button>
-                    </div>
-                  </form>
+      {/* Full name */}
+      <div>
+        <h1>Edit Profile</h1>
+        <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
+          <div>
+            <label>First Name</label>
+            <input
+              type="text"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+            />
+          </div>
+          <div>
+            <label>Last Name: </label>
+            <input
+              type="text"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+            />
+          </div>
+          <button
+            onClick={handleSaveName}
+            style={{
+              padding: "8px 16px",
+              backgroundColor: "#007bff",
+              color: "#fff",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+            }}
+          >
+            Save
+          </button>
+        </div>
+      </div>
+      {/* Username */}
+      <div className="col-md-6">
+        <label className="form-label">Username</label>
+        <div className="input-group">
+          <span className="input-group-text">Eduport.com</span>
+          <input
+            type="text"
+            className="form-control"
+            defaultValue="loristev"
+          />
+        </div>
+      </div>
+      {/* Email id */}
+      <div className="col-md-6">
+        <label className="form-label">Email id</label>
+        <input
+          className="form-control"
+          type="email"
+          defaultValue="example@gmail.com"
+          placeholder="Email"
+        />
+      </div>
+      {/* Phone number */}
+      <div className="col-md-6">
+        <label className="form-label">Phone number</label>
+        <input
+          type="text"
+          className="form-control"
+          defaultValue={1234567890}
+          placeholder="Phone number"
+        />
+      </div>
+      {/* Location */}
+      <div className="col-md-6">
+        <label className="form-label">Location</label>
+        <input
+          className="form-control"
+          type="text"
+          defaultValue="California"
+        />
+      </div>
+      {/* About me */}
+      <div className="col-12">
+        <label className="form-label">About me</label>
+        <textarea
+          className="form-control"
+          rows={3}
+          defaultValue={"I’ve found a way to get paid for my favorite hobby, and do so while following my dream of traveling the world."}
+        />
+        <div className="form-text">Brief description for your profile.</div>
+      </div>
+      {/* Education */}
+      <div className="col-12">
+        <label className="form-label">Education</label>
+        <input
+          className="form-control mb-2"
+          type="text"
+          defaultValue="Bachelor in Computer Graphics"
+        />
+        <input
+          className="form-control mb-2"
+          type="text"
+          defaultValue="Masters in Computer Graphics"
+        />
+        <button className="btn btn-sm btn-light mb-0">
+          <i className="bi bi-plus me-1" />
+          Add more
+        </button>
+      </div>
+      {/* Save button */}
+      <div className="d-sm-flex justify-content-end">
+        <button type="button" className="btn btn-primary mb-0">
+          Save changes
+        </button>
+      </div>
+    </form>
                 </div>
                 {/* Card body END */}
               </div>

@@ -27,6 +27,10 @@ const AdminEdit = () => {
         console.log("Fetched Name:", firstName, lastName); // Log fetched name
         setFirstName(firstName);
         setLastName(lastName);
+
+        // Save to localStorage
+        localStorage.setItem("userFirstName", firstName);
+        localStorage.setItem("userLastName", lastName);
       } else {
         console.error("Error fetching name:", res.data.error);
       }
@@ -51,14 +55,18 @@ const AdminEdit = () => {
   
     try {
       const res = await axios.put(`/api/auth/updateName/${userId}`, {
-        firstName,
-        lastName,
+        firstName: firstName.trim(),
+      lastName: lastName.trim(),
         role: "Admin", // Specify role as Admin
       });
   
       if (res.data.success) {
         alert("Name updated successfully!");
         setIsEditing(false);
+
+      // Save the updated name in localStorage
+      localStorage.setItem("userFirstName", firstName);
+      localStorage.setItem("userLastName", lastName);
       } else {
         console.error("Error updating name:", res.data.error);
       }
@@ -85,8 +93,10 @@ const AdminEdit = () => {
             setAdminImage(latestImage);
             setPreview(latestImage);
           } else {
-            setAdminImage("assets/images/avatar/07.jpg");
-            setPreview("assets/images/avatar/07.jpg");
+            setAdminImage("http://13.235.71.191:3000/assets/images/avatar/07.jpg"); 
+            setPreview("http://13.235.71.191:3000/assets/images/avatar/07.jpg");
+
+
           }
         }
       } catch (error) {
@@ -131,7 +141,7 @@ console.log("Stored Image URL in LocalStorage: ", storedImage);    if (storedIma
   
       console.log("Response from server: ", res); // Log the full response
       if (res.status === 200) {
-        const latestImageUrl = `http://localhost:3000/public/${res.data.imageFile}`;
+        const latestImageUrl = `http://13.235.71.191:3000/public/${res.data.imageFile}`;
         console.log("Constructed Image URL: ", latestImageUrl); // Check constructed URL
   
         // Store image URL in localStorage
@@ -169,7 +179,7 @@ console.log("Stored Image URL in LocalStorage: ", storedImage);    if (storedIma
   return (
     <div>
       {/* =======================
-Page Banner START */}
+         Page Banner START */}
       <section className="pt-0">
         {/* Main banner background image */}
         <div className="container-fluid px-0">

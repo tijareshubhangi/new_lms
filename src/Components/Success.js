@@ -16,6 +16,7 @@ const Success = () => {
               boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)', // Optional: Add shadow
             }}
           />
+          
       <div style={styles.box}>
         <h3 style={styles.title}>🎉 Purchase Successful! 🎉</h3>
         <p style={styles.message}>Thank you for your purchase from LMS by PSK Technologies. Have a great day!</p>

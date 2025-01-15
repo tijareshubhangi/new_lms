@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const AdminTopNavBar = () => {
-  const [theme, setThemeState] = useState(
-    localStorage.getItem("theme") || "light"
-  );
+  const [theme, setThemeState] = useState(localStorage.getItem("theme") || "light");
   const [profileImage, setProfileImage] = useState("assets/images/avatar/01.jpg"); // Default profile image
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [notifications, setNotifications] = useState([]);
+
 
   useEffect(() => {
-    // Fetch the profile image from localStorage if it exists
     const storedImage = localStorage.getItem("adminImage");
-    if (storedImage) {
-      setProfileImage(storedImage);  // Update the profile image from localStorage
-    }
+    if (storedImage) setProfileImage(storedImage);
+    const storedFirstName = localStorage.getItem("userFirstName") || "User";
+    const storedLastName = localStorage.getItem("userLastName") || "";
+    setFirstName(storedFirstName);
+    setLastName(storedLastName);
   }, []);
 
   const setTheme = (theme) => {
@@ -57,6 +61,18 @@ const AdminTopNavBar = () => {
     localStorage.setItem("theme", selectedTheme);
     setTheme(selectedTheme);
     showActiveTheme(selectedTheme);
+  };
+  useEffect(() => {
+    // Fetch notifications for admin
+    axios.get('/api/get-notifications').then((response) => {
+      setNotifications(response.data);
+    });
+  }, []);
+
+  const handleNotificationClick = async (id) => {
+    // Mark the notification as read in the backend
+    await axios.post('/api/mark-notification-read', { id });
+    setNotifications((prev) => prev.filter((notif) => notif._id !== id));  // Remove the notification from UI
   };
 
   return (
@@ -150,21 +166,40 @@ const AdminTopNavBar = () => {
               <ul className="navbar-nav flex-row align-items-center">
                 {/* Notification dropdown START */}
                 <li className="nav-item ms-2 ms-md-3 dropdown">
-                  <a
-                    className="btn btn-light btn-round mb-0"
-                    href="#"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                    data-bs-auto-close="outside"
-                  >
-                    <i className="bi bi-bell fa-fw" />
-                  </a>
-                  <span className="notif-badge animation-blink" />
-                  <div className="dropdown-menu dropdown-animation dropdown-menu-end dropdown-menu-size-md p-0 shadow-lg border-0">
-                    {/* Dropdown content here */}
-                  </div>
-                </li>
+      <a
+        className="btn btn-light btn-round mb-0"
+        href="#"
+        role="button"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+        data-bs-auto-close="outside"
+      >
+        <i className="bi bi-bell fa-fw" />
+        {notifications.length > 0 && (
+          <span className="notif-badge animation-blink">{notifications.length}</span>
+        )}
+              {notifications.length > 0 && (
+        <div className="notifications">
+          {notifications.map((notif) => (
+            <div key={notif._id} className="notification-item" onClick={() => handleNotificationClick(notif._id)}>
+              {notif.message}
+            </div>
+          ))}
+        </div>
+      )}
+      </a>
+      <ul className="dropdown-menu dropdown-animation dropdown-menu-end dropdown-menu-size-md p-0 shadow-lg border-0">
+        {notifications.length === 0 ? (
+          <li className="dropdown-item">No notifications</li>
+        ) : (
+          notifications.map((notification, index) => (
+            <li key={index} className="dropdown-item">
+              {notification.studentName} purchased Course ID: {notification.courseId}
+            </li>
+          ))
+        )}
+      </ul>
+    </li>
                 {/* Notification dropdown END */}
                 {/* Profile dropdown START */}
                 <li className="nav-item ms-2 ms-md-3 dropdown">
@@ -200,8 +235,8 @@ const AdminTopNavBar = () => {
                     />
                                       </div>
                   <div>
-                    <a className="h6 mt-2 mt-sm-0" href="#">Lori Ferguson</a>
-                    <p className="small m-0">example@gmail.com</p>
+                  <a className="h6 mt-2 mt-sm-0" href="#">{firstName} {lastName}!</a>
+                  <p className="small m-0">example@gmail.com</p>
                   </div>
                 </div>
               </li>

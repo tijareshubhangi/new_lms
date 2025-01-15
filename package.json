@@ -51,9 +51,12 @@
     "rechart": "^0.0.1",
     "recharts": "^2.12.7",
     "slick-carousel": "^1.8.1",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
     "tiny-slider": "^2.9.4",
     "tiny-slider-react": "^0.5.7",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "ws": "^8.18.0"
   },
   "scripts": {
     "start": "react-scripts start ",

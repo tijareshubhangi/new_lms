@@ -25,34 +25,19 @@ const app = express();
 dotenv.config();
 mongoose.set("strictQuery", true);
 
-
- app.use(express.static(path.join(__dirname, "../build")));
-
-// Middleware
-// Connect to the database
+// Connect to Database
 connectDB();
 
-// Define allowed origins (you can include both localhost and public IP for production)
-const allowedOrigins = ['http://localhost:9000', 'http://13.201.186.255:3000','http://13.201.186.255','http://13.201.186.255:9000'];
+// app.use(express.static(path.join(__dirname, "../build")));
 
-// CORS middleware with dynamic origin handling
-app.use(cors({
-  origin: (origin, callback) => {
-    if (allowedOrigins.includes(origin) || !origin) {
-      callback(null, true); // Allow the request
-    } else {
-      callback(new Error('Not allowed by CORS')); // Reject the request
-    }
-  },
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow these HTTP methods
-  credentials: true // Allow cookies and credentials
-}));
+// Middleware
+app.use(cors());
 app.use(express.json());
 
 // Handle React routing
- app.get("*", (req, res) => {
-   res.sendFile(path.join(__dirname, "../build", "index.html"));
- });
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "../build", "index.html"));
+// });
 
 // Parse JSON data
 app.use(bodyParser.json());
@@ -88,6 +73,7 @@ const storage = multer.diskStorage({
     cb(null, Date.now() + path.extname(file.originalname)); // Appending extension
   },
 });
+
 
 const upload = multer({
   storage: storage,
@@ -214,7 +200,7 @@ app.post('/api/users/save', async (req, res) => {
 
 
 // Start Server
-const PORT = process.env.PORT || 9000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`API is running on http://13.201.186.255:${PORT}`);
+  console.log(`API is running on http://13.235.71.191:${PORT}`);
 });

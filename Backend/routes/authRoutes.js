@@ -6,6 +6,7 @@ import authController from "../controllers/authController.js";
 import checkIsUserAuthenticated from "../middlewares/authMiddleware.js";
 import UserModel from "../models/authModel.js";
 
+
 const router = express.Router();
 
 // User Authentication Routes
@@ -74,6 +75,33 @@ router.post("/upload/:userId", upload.single("file"), async (req, res) => {
   }
 });
 
+
+// Get User's Profile with Latest Image
+router.get("/user/:userId", async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await UserModel.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    // Assuming you have a field in your User model for profileImage
+    const latestImageUrl = user.profileImage
+      ? `http://13.235.71.191:3000/public/${user.profileImage}`
+      : null;
+
+    return res.json({
+      success: true,
+      latestImage: latestImageUrl,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
+});
+
 // Get User's Name Based on Role
 router.get("/getName/:userId/:role", async (req, res) => {
   const { userId, role } = req.params;
@@ -104,6 +132,48 @@ router.get("/getName/:userId/:role", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+// Notification Routes
+router.get("/notifications", async (req, res) => {
+  console.log('Notifications request received');
+
+  try {
+    const notifications = await Notification.find().sort({ createdAt: -1 });
+    if (!notifications.length) {
+      return res.status(200).json({ notifications: [] });
+    }
+    res.json({ notifications });
+  } catch (error) {
+    console.error("Error fetching notifications:", error);
+    res.status(500).json({ message: "Error fetching notifications", error });
+  }
+});
+
+// Notification Routes
+router.post("/notify", async (req, res) => {
+  const { studentName, courseId } = req.body;
+
+  if (!studentName || !courseId) {
+    return res.status(400).json({ message: "Student name and course ID are required!" });
+  }
+
+  try {
+    const notifications = [
+      { studentName: "Shubhangi", courseId: "123", message: "Course purchased!" },
+      { studentName: "Amit", courseId: "456", message: "Course purchased!" },
+    ];
+
+    await notification.save();
+
+    res.status(201).json({ message: "Notification sent successfully!" });
+  } catch (error) {
+    console.error("Error sending notification:", error);
+    res.status(500).json({ message: "Error sending notification", error });
+  }
+});
+
+
+
 
 // Update user's name
 router.put("/updateName/:userId", async (req, res) => {
